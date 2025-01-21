@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:video_call_app/components/button.component.dart';
 import 'package:video_call_app/components/error-text.component.dart';
 import 'package:video_call_app/components/input.component.dart';
@@ -84,6 +85,22 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void openInNewTab(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication, // Ensures the link opens externally
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  void openGithub() {
+    this.openInNewTab("https://github.com/Ed-will-X/LiveKit-Flutter-Test");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -143,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                       ] else ...[
                         ButtonComponent(text: "Join Room", backgroundColor: Colors.white, fontWeight: FontWeight.bold, elevation: 0, onPressed: this.handleJoinRoomClick, textColor: Colors.black),
                         SizedBox(height: 30,),
-                        ButtonComponent(text: "Github Repo", icon: HugeIcons.strokeRoundedGithub, backgroundColor: Colors.purple, fontWeight: FontWeight.bold, elevation: 0, onPressed: () {}, textColor: Colors.white),
+                        ButtonComponent(text: "Github Repo", icon: HugeIcons.strokeRoundedGithub, backgroundColor: Colors.purple, fontWeight: FontWeight.bold, elevation: 0, onPressed: this.openGithub, textColor: Colors.white),
                       ]
                     ],
                   ),
